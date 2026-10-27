@@ -11,7 +11,7 @@ function hasScheduleConflict(courseA: Course, courseB: Course): boolean {
   // Si los días no coinciden, no hay conflicto
   const daysA = courseA.days.toLowerCase().split(/[\s,-]+/);
   const daysB = courseB.days.toLowerCase().split(/[\s,-]+/);
-  const commonDays = daysA.filter((d) => d && daysB.includes(d));
+  const commonDays = daysA.filter((d: string) => d && daysB.includes(d));
   if (commonDays.length === 0) return false;
 
   const startA = parseTimeToMinutes(courseA.startTime);

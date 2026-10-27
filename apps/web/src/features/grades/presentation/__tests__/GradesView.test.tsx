@@ -1,12 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { GradesAndHistoryPage } from '../GradesAndHistoryPage';
-import * as useAuthModule from '../../auth/application/useAuth';
-import { gradesUseCases } from '../../grades/application/grades.use-cases';
-import { coursesUseCases } from '../../courses/application/courses.use-cases';
+import * as useAuthModule from '../../../auth/application/useAuth';
+import { gradesUseCases } from '../../application/grades.use-cases';
+import { coursesUseCases } from '../../../courses/application/courses.use-cases';
 import { UserRole, GradeCondition, CourseModality } from '@unicen/shared';
 
-vi.mock('../../grades/application/grades.use-cases', () => ({
+vi.mock('../../application/grades.use-cases', () => ({
   gradesUseCases: {
     getCourseGrades: vi.fn(),
     updateGrade: vi.fn(),
@@ -16,7 +17,7 @@ vi.mock('../../grades/application/grades.use-cases', () => ({
   },
 }));
 
-vi.mock('../../courses/application/courses.use-cases', () => ({
+vi.mock('../../../courses/application/courses.use-cases', () => ({
   coursesUseCases: {
     getCatalog: vi.fn(),
     getMetrics: vi.fn(),
@@ -162,7 +163,7 @@ describe('GradesView Integration Tests (Control de Acceso y Edición por Rol)', 
     const teacherTabBtn = screen.getByRole('button', {
       name: /Vista Docente: Planilla y Matriz/i,
     });
-    teacherTabBtn.click();
+    await userEvent.click(teacherTabBtn);
 
     await waitFor(() => {
       const inputPartial1 = screen.getByLabelText(

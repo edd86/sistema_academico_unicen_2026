@@ -16,6 +16,7 @@ import { HttpGradeRepository } from '../infrastructure/http-grade.repository';
 import { HttpCourseRepository } from '../../courses/infrastructure/http-course.repository';
 import { HttpEnrollmentRepository } from '../../enrollments/infrastructure/http-enrollment.repository';
 import { gradesUseCases } from '../application/grades.use-cases';
+import { coursesUseCases } from '../../courses/application/courses.use-cases';
 import { CourseGradesPayload, AcademicHistory } from '../domain/grade';
 import { Course } from '../../courses/domain/course';
 import { StudentProfile } from '../../enrollments/domain/enrollment';
@@ -63,8 +64,8 @@ export const GradesAndHistoryPage: React.FC = () => {
     const init = async () => {
       try {
         const [courseList, studentList] = await Promise.all([
-          courseRepository.getCourses({ term: '2026-I' }),
-          enrollmentRepository.getStudents(),
+          coursesUseCases.getCatalog(courseRepository, { term: '2026-I' }),
+          enrollmentRepository.getStudents().catch(() => []),
         ]);
         setCourses(courseList);
         setStudents(studentList);
