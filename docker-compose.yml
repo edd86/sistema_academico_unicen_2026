@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: unicen_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-unicen_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-unicen_pass_2026}
+      POSTGRES_DB: ${DB_NAME:-unicen_academico}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./apps/api/src/database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-unicen_user} -d ${DB_NAME:-unicen_academico}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: unicen_api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-unicen_user}
+      DB_PASSWORD: ${DB_PASSWORD:-unicen_pass_2026}
+      DB_NAME: ${DB_NAME:-unicen_academico}
+      JWT_SECRET: ${JWT_SECRET:-unicen_jwt_secret_token_key_2026_academic_production}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-24h}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: unicen_web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

@@ -1,0 +1,22 @@
+{
+  "name": "sistema-academico-unicen-2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema Académico Institucional UNICEN 2026 - Monorepo",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "lint": "turbo run lint",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.4",
+    "typescript": "^5.7.3"
+  }
+}
