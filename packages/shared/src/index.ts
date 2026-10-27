@@ -86,7 +86,10 @@ export interface CourseDto {
   teacherId?: string;
   teacherName?: string;
   teacherTitle?: string;
-  schedule: CourseScheduleDto;
+  days: string;
+  startTime: string;
+  endTime: string;
+  schedule?: CourseScheduleDto;
   subject?: SubjectDto;
 }
 
