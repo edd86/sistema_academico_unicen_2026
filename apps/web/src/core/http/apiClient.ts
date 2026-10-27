@@ -1,5 +1,16 @@
 import axios from 'axios';
 
+function getStoredToken(): string | null {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem('unicen_token');
+    }
+  } catch {
+    // Ignore localStorage errors in non-browser env
+  }
+  return null;
+}
+
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
@@ -8,7 +19,7 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('unicen_token');
+  const token = getStoredToken();
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -19,10 +30,15 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Si la petición no es de login y da 401, limpiar sesión
-      if (!error.config.url.includes('/auth/login')) {
-        localStorage.removeItem('unicen_token');
-        localStorage.removeItem('unicen_user');
+      if (!error.config?.url?.includes('/auth/login')) {
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            window.localStorage.removeItem('unicen_token');
+            window.localStorage.removeItem('unicen_user');
+          }
+        } catch {
+          // Ignore
+        }
       }
     }
     return Promise.reject(error);
