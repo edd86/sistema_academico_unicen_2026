@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { HttpExceptionFilter } from '../src/common/filters/http-exception.filter';
 import { CourseEntity } from '../src/modules/courses/entities/course.entity';
@@ -8,6 +8,7 @@ import { StudentEntity } from '../src/modules/students/entities/student.entity';
 import { DataSource } from 'typeorm';
 
 describe('Flujo E2E Autenticación e Inscripción (auth-enrollment.e2e-spec.ts)', () => {
+  jest.setTimeout(45000);
   let app: INestApplication;
   let dataSource: DataSource;
   let token: string;

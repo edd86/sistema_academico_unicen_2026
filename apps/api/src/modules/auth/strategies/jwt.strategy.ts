@@ -28,7 +28,7 @@ export class JwtTokenStrategy
       secret:
         process.env.JWT_SECRET ||
         'unicen_super_secret_jwt_key_2026_academic_precision',
-      expiresIn: process.env.JWT_EXPIRATION || '24h',
+      expiresIn: (process.env.JWT_EXPIRATION as any) || '24h',
     });
   }
 

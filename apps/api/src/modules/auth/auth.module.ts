@@ -15,7 +15,7 @@ import { TOKEN_STRATEGY } from './strategies/token.strategy.interface';
       secret:
         process.env.JWT_SECRET ||
         'unicen_super_secret_jwt_key_2026_academic_precision',
-      signOptions: { expiresIn: process.env.JWT_EXPIRATION || '24h' },
+      signOptions: { expiresIn: (process.env.JWT_EXPIRATION as any) || '24h' },
     }),
   ],
   controllers: [AuthController],

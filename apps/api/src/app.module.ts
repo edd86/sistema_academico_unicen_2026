@@ -16,6 +16,9 @@ import { AuditModule } from './modules/audit/audit.module';
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: () => DataSourceConfigFactory.createOptions(),
+      dataSourceFactory: async (options) => {
+        return DataSourceConfigFactory.createDataSource(options);
+      },
     }),
     EventEmitterModule.forRoot({
       wildcard: false,
