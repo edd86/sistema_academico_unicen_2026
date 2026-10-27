@@ -125,7 +125,7 @@ export class SeedService implements OnApplicationBootstrap {
       department: 'Ingeniería de Sistemas',
     });
 
-    await userRepo.save([
+    for (const u of [
       adminUser,
       teacherMendoza,
       teacherSiles,
@@ -137,7 +137,9 @@ export class SeedService implements OnApplicationBootstrap {
       studentBalderramaUser,
       studentFernandezUser,
       studentGutierrezUser,
-    ]);
+    ]) {
+      await userRepo.save(u);
+    }
 
     // 2. Estudiantes
     const studentRepo = this.dataSource.getRepository(StudentEntity);
@@ -213,14 +215,16 @@ export class SeedService implements OnApplicationBootstrap {
       currentSemester: 5,
     });
 
-    await studentRepo.save([
+    for (const s of [
       studentMateo,
       studentMendoza,
       studentQuispe,
       studentBalderrama,
       studentFernandez,
       studentGutierrez,
-    ]);
+    ]) {
+      await studentRepo.save(s);
+    }
 
     // 3. Materias (Subjects)
     const subjectRepo = this.dataSource.getRepository(SubjectEntity);
@@ -304,7 +308,7 @@ export class SeedService implements OnApplicationBootstrap {
       prerequisites: [],
     });
 
-    await subjectRepo.save([
+    for (const sub of [
       subSis301,
       subSis305,
       subSis308,
@@ -313,7 +317,9 @@ export class SeedService implements OnApplicationBootstrap {
       subSis302,
       subMat301,
       subSis201,
-    ]);
+    ]) {
+      await subjectRepo.save(sub);
+    }
 
     // 4. Oferta de Cursos (Courses)
     const courseRepo = this.dataSource.getRepository(CourseEntity);
@@ -477,7 +483,7 @@ export class SeedService implements OnApplicationBootstrap {
       endTime: '10:00',
     });
 
-    await courseRepo.save([
+    for (const c of [
       courseSis301A,
       courseSis301B,
       courseSis305A,
@@ -487,7 +493,9 @@ export class SeedService implements OnApplicationBootstrap {
       courseSis302_1,
       courseMat301_1,
       courseSis201Hist,
-    ]);
+    ]) {
+      await courseRepo.save(c);
+    }
 
     // 5. Inscripciones y Notas para SIS-301 Paralelo A
     const enrollmentRepo = this.dataSource.getRepository(EnrollmentEntity);

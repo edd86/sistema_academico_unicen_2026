@@ -70,12 +70,14 @@ export class DataSourceConfigFactory {
       db.public.registerFunction({
         name: 'uuid_generate_v4',
         implementation: () => crypto.randomUUID(),
+        impure: true,
       });
 
       db.registerExtension('uuid-ossp', (schema) => {
         schema.registerFunction({
           name: 'uuid_generate_v4',
           implementation: () => crypto.randomUUID(),
+          impure: true,
         });
       });
 
